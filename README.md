@@ -11,6 +11,8 @@
 
 **▶ Try it: <https://ask-your-data-sigma.vercel.app/>** — click *"Show me last month's best customer."*
 
+[![Ask Your Data demo: one question, three right answers, the app asks which one you mean](docs/media/demo.gif)](https://ask-your-data-sigma.vercel.app/)
+
 ---
 
 ## The problem
