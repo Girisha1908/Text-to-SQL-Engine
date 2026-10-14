@@ -2,6 +2,8 @@
 
 **Text-to-SQL that asks what you mean before it answers.**
 
+Live demo: https://insightcart.girishanamala.tech
+
 Ask an e-commerce database a question in plain English and get the answer — but when the question can be
 read more than one way, the system stops and asks which meaning you want *before* it writes any SQL.
 
@@ -80,6 +82,21 @@ cd frontend
 npm install
 npm run dev                                # http://localhost:5173
 ```
+
+## Deployment
+
+One Vercel project serves both halves (`vercel.json`, Vercel Services): `/api/*` goes to the FastAPI backend
+(`backend/`, a Python function) and everything else to the Vite build (`frontend/`). The database is a free
+Neon Postgres. Environment variables on Vercel:
+
+| Variable | Value |
+|---|---|
+| `DATABASE_URL` | Neon connection string (pooled) |
+| `ASK_AS_OF_DATE` | `2026-10-13` (the demo data's "today") |
+| `ASK_LLM_PROVIDER` | `offline` (or `groq` / `gemini` with the matching key) |
+
+Seed the hosted database once: `DATABASE_URL=<neon url> python scripts/seed_ask_demo.py`.
+`GET /api/health` is the uptime-monitor endpoint; it does not touch the database.
 
 ## Tests and evaluation
 
