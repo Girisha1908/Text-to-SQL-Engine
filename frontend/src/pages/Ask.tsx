@@ -1,9 +1,9 @@
 import { FormEvent, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ApiError } from '../services/api'
-import { ask, AskResponse, Clarification, ResolvedTerm } from '../services/askApi'
+import { ApiError, ask, AskResponse, Clarification, ResolvedTerm } from '../services/askApi'
 
-// Design: docs/ask/DESIGN.md (teal #0F766E = teal-700, wash #F0FDFA = teal-50, canvas #FAFAF9 = stone-50).
+// Design: docs/DESIGN.md (teal #0F766E = teal-700, wash #F0FDFA = teal-50, canvas #FAFAF9 = stone-50).
+
+const REPO = 'https://github.com/Girisha1908/ask-your-data'
 
 const SANS = "font-['Geist',ui-sans-serif,system-ui,sans-serif]"
 const MONO = "font-['Geist_Mono',ui-monospace,monospace]"
@@ -69,22 +69,17 @@ const TAG_STYLE: Record<Tag, string> = {
 function TopBar() {
   return (
     <header className="border-b border-zinc-200 bg-white">
-      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 px-4 sm:justify-start sm:gap-8 sm:px-6">
-        <Link to="/" className="text-lg font-semibold tracking-tight text-zinc-900">
-          InsightCart
-        </Link>
-        <nav className="flex items-center gap-1 overflow-x-auto text-sm">
-          <Link to="/" className="rounded-lg px-3 py-2 text-zinc-600 hover:text-zinc-900">
-            Overview
-          </Link>
-          {['Products', 'Opportunities'].map((n) => (
-            <span key={n} aria-disabled className="hidden cursor-default rounded-lg px-3 py-2 text-zinc-400 sm:inline" title="Coming soon">
-              {n}
-            </span>
-          ))}
-          <span aria-current="page" className="rounded-lg bg-teal-700 px-3 py-2 font-medium text-white">
-            Ask
-          </span>
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-6">
+        <a href="/" className="text-lg font-semibold tracking-tight text-zinc-900">
+          Ask Your Data
+        </a>
+        <nav className="flex items-center gap-1 text-sm">
+          <a href={`${REPO}/blob/main/docs/eval-results.md`} className="hidden rounded-lg px-3 py-2 text-zinc-600 hover:text-zinc-900 sm:inline">
+            Evaluation
+          </a>
+          <a href={REPO} className="rounded-lg px-3 py-2 text-zinc-600 hover:text-zinc-900">
+            GitHub
+          </a>
         </nav>
       </div>
     </header>

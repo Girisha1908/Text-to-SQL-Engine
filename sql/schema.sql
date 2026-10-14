@@ -1,6 +1,6 @@
 -- Ask Your Data demo schema.
--- Mirrors the canonical InsightCart model (customers, orders, order_items, products)
--- plus Olist-style payments. Lives in its own schema so it never collides with
+-- Five tables of a small e-commerce store: customers, orders, order_items, products
+-- and Olist-style payments. Lives in its own schema so it never collides with
 -- ingested data in `public`.
 
 DROP SCHEMA IF EXISTS ask_demo CASCADE;

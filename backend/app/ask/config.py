@@ -1,8 +1,4 @@
-"""Settings for the Ask Your Data feature.
-
-Kept separate from the shared `app.core.config` so this feature adds env vars
-without changing the shared contract.
-"""
+"""Settings, read from environment variables or a local .env file."""
 
 from datetime import date
 from functools import lru_cache
@@ -10,15 +6,13 @@ from typing import Literal, Optional
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from app.core.config import settings as core_settings
-
 
 class AskSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=(".env", "../.env"), env_file_encoding="utf-8", extra="ignore"
     )
 
-    ASK_DATABASE_URL: Optional[str] = None  # falls back to the shared DATABASE_URL
+    DATABASE_URL: str = "postgresql+psycopg://askdata:askdata@localhost:5433/askdata"
     ASK_DB_SCHEMA: str = "ask_demo"
     ASK_AS_OF_DATE: Optional[date] = None  # "today" for relative dates; None = real today
     ASK_MAX_ROWS: int = 200
@@ -31,7 +25,11 @@ class AskSettings(BaseSettings):
 
     @property
     def database_url(self) -> str:
-        return self.ASK_DATABASE_URL or core_settings.DATABASE_URL
+        # Hosted Postgres (Neon, Supabase) hands out postgres:// URLs; SQLAlchemy needs the psycopg driver named.
+        for prefix in ("postgres://", "postgresql://"):
+            if self.DATABASE_URL.startswith(prefix):
+                return "postgresql+psycopg://" + self.DATABASE_URL[len(prefix):]
+        return self.DATABASE_URL
 
     @property
     def as_of(self) -> date:

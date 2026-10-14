@@ -1,4 +1,4 @@
-# Design System: InsightCart — Ask Your Data
+# Design System: Ask Your Data
 
 ## 1. Visual Theme & Atmosphere
 A calm, precise analyst's workbench. The interface feels like a well-kept ledger, not a chatbot: quiet zinc
@@ -65,8 +65,7 @@ No purple, no blue-violet gradients, no neon. Never pure black.
 - Single main column, max-width 880px, left-aligned within a 1200px page container; a narrow right rail
   (280px) on desktop ≥1200px holds "Questions you can try" and a tiny "What I know about" list (customers,
   orders, order items, products, payments). Rail drops below the main column under 1200px.
-- Top bar: "InsightCart" wordmark left, nav items "Overview · Products · Opportunities · Ask" with "Ask"
-  active, all text, no icons required.
+- Top bar: "Ask Your Data" wordmark left, links to the GitHub repo and the evaluation results on the right.
 - Vertical rhythm: 24px between related blocks, 48px between question area and answer.
 - Below 768px: everything one column, option tiles stack vertically, table scrolls inside its own panel
   (never the page), touch targets 44px minimum, no horizontal page scroll.

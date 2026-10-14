@@ -24,7 +24,7 @@ from app.ask.schemas import AskRequest, LLMSql, ResolvedTerm
 from app.ask.sql_guard import UnsafeSQL, check_sql
 
 AS_OF = date(2026, 10, 13)
-CASES = json.loads((Path(__file__).resolve().parents[2] / "ml" / "evaluation" / "ask_eval_cases.json")
+CASES = json.loads((Path(__file__).resolve().parents[2] / "eval" / "cases.json")
                    .read_text(encoding="utf-8"))["cases"]
 
 

@@ -10,7 +10,7 @@ Planted for September 2026 ("last month" relative to the anchor), so that
   C-MANY   many orders on only 4 days    -> most orders
   C-FREQ   one order on each of 10 days  -> came back most often
 
-Usage (from backend/):  python ../scripts/seed_ask_demo.py
+Usage (from the repo root):  python scripts/seed_ask_demo.py
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ from sqlalchemy import create_engine, text  # noqa: E402
 
 ANCHOR = date(2026, 10, 13)
 START = date(2025, 1, 1)
-SCHEMA_SQL = ROOT / "sql" / "ask" / "schema.sql"
+SCHEMA_SQL = ROOT / "sql" / "schema.sql"
 
 CITIES = [
     ("Sao Paulo", "SP", 30), ("Campinas", "SP", 8), ("Rio de Janeiro", "RJ", 15),

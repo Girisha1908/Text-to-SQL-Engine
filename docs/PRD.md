@@ -1,11 +1,11 @@
 # PRD — Ask Your Data: Text-to-SQL with a Clarification Engine
 
-> Owner: Girisha (Developer 2) · Status: v1 implemented · Last updated: 2026-10-13
-> Related: `Readme.md` → "Future Feature: Ask Your Data", `docs/ask/PLAN.md`, `docs/ask/eval-results.md`
+> Author: Anamala Girisha · Status: v1 implemented · Last updated: 2026-10-15
+> Related: `docs/PLAN.md`, `docs/DESIGN.md`, `docs/eval-results.md`
 
 ## 1. Problem
 
-A business user wants to ask the InsightCart database questions in plain English:
+A business user wants to ask an e-commerce database questions in plain English:
 
 > "How many new customers signed up last month?"
 
@@ -60,7 +60,7 @@ Build a natural-language query layer that:
 - Demo dataset (customers, orders, order_items, products, payments) in a separate
   Postgres schema `ask_demo`, seeded deterministically.
 - Evaluation harness: 30 labelled questions, simulated user, execution-match scoring,
-  results written to `docs/ask/eval-results.md`.
+  results written to `docs/eval-results.md`.
 - Minimal React page `/ask` to try the flow.
 
 ### Out of scope (v1)
@@ -69,7 +69,7 @@ Build a natural-language query layer that:
 - Charts / visualisation of results.
 - Per-user database roles and row-level security (see §10).
 - Writing to the database in any form.
-- Changing the canonical schema or Kuldeep's customer vertical.
+- Ingesting arbitrary uploaded datasets (the schema is fixed to the five demo tables).
 
 ## 5. User flow
 
@@ -206,7 +206,7 @@ A term is **not** asked when the question already disambiguates it
 ```text
 backend/app/
 ├── api/ask.py                 POST /api/ask
-└── services/ask/
+└── ask/
     ├── config.py              AskSettings (env: ASK_*)
     ├── schemas.py             Pydantic request/response + LLM structured outputs
     ├── glossary.py            ambiguous terms + governed defaults + detection
@@ -216,10 +216,10 @@ backend/app/
     ├── sql_guard.py           single SELECT/WITH only, denylist
     ├── executor.py            read-only txn, statement_timeout, search_path, row cap
     └── engine.py              orchestration: detect → clarify → generate → guard → run
-sql/ask/schema.sql             demo schema DDL (ask_demo)
+sql/schema.sql                 demo schema DDL (ask_demo)
 scripts/seed_ask_demo.py       deterministic demo data
-scripts/eval_ask.py            evaluation harness → docs/ask/eval-results.md
-ml/evaluation/ask_eval_cases.json   30 labelled questions + gold SQL
+scripts/eval_ask.py            evaluation harness → docs/eval-results.md
+eval/cases.json                     30 labelled questions + gold SQL
 frontend/src/pages/Ask.tsx     UI
 ```
 
@@ -235,14 +235,13 @@ frontend/src/pages/Ask.tsx     UI
    shown as assumptions.
 3. **Stateless clarification.** The client re-sends the question plus chosen options.
    No session store, nothing to expire.
-4. **Offline generator is the default.** The team contract forbids requiring paid APIs
-   and requires everything to run locally. Groq/Gemini free tiers are opt-in via env.
+4. **Offline generator is the default.** The project must cost ₹0, run without paid APIs
+   and work fully locally. Groq/Gemini free tiers are opt-in via env.
 5. **Read-only by construction.** Guard rejects anything but one SELECT/WITH; the
    executor also runs inside `SET TRANSACTION READ ONLY` with a 5 s timeout and a row
    cap, then rolls back. The guard is a convenience; the transaction is the control.
-6. **Separate `ask_demo` schema.** The feature does not depend on the unfinished
-   product/order-item ingestion. Point `ASK_DB_SCHEMA=public` at real canonical data
-   later; the table names already match the canonical model.
+6. **Separate `ask_demo` schema.** Demo data lives in its own schema so the same database
+   can hold real data later; point `ASK_DB_SCHEMA` at another schema with the same tables.
 7. **Fair baseline.** "Without clarification" (`mode=direct`) uses the same glossary
    defaults and the same generator; it only skips the asking step and lets the
    generator choose. This isolates the effect of clarification.

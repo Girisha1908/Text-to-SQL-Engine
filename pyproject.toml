@@ -1,0 +1,9 @@
+[project]
+name = "ask-your-data"
+version = "1.0.0"
+description = "Text-to-SQL with a clarification engine"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["backend/tests"]
+pythonpath = ["backend", "."]

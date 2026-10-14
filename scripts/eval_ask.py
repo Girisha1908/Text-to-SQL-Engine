@@ -6,10 +6,10 @@ For every labelled question:
             intended meaning, then the question is re-sent with the clarifications.
 A run is correct when its result matches the gold SQL's result (see `results_match`).
 
-Usage (from backend/):
-  python ../scripts/eval_ask.py                    # offline planner, no network
-  python ../scripts/eval_ask.py --provider groq    # needs GROQ_API_KEY
-  python ../scripts/eval_ask.py --reseed           # rebuild ask_demo first
+Usage (from the repo root):
+  python scripts/eval_ask.py                    # offline planner, no network
+  python scripts/eval_ask.py --provider groq    # needs GROQ_API_KEY
+  python scripts/eval_ask.py --reseed           # rebuild ask_demo first
 """
 
 from __future__ import annotations
@@ -35,9 +35,9 @@ from app.ask.executor import PostgresExecutor, QueryResult  # noqa: E402
 from app.ask.llm import make_llm  # noqa: E402
 from app.ask.schemas import AskRequest, AskResponse, ResolvedTerm  # noqa: E402
 
-CASES = ROOT / "ml" / "evaluation" / "ask_eval_cases.json"
-REPORT = ROOT / "docs" / "ask" / "eval-results.md"
-RAW = ROOT / "data" / "processed" / "ask_eval.json"
+CASES = ROOT / "eval" / "cases.json"
+REPORT = ROOT / "docs" / "eval-results.md"
+RAW = ROOT / "data" / "ask_eval.json"
 
 
 def _norm(v):
@@ -202,7 +202,7 @@ def write_report(records: list[dict], generator: str, as_of: date) -> None:
         mark = lambda b, st: "✅" if b else f"❌ {'' if st == 'answered' else st}".strip()  # noqa: E731
         lines.append(f"| {r['id']} | {r['question']} | {intent} | {mark(r['direct_ok'], r['direct_status'])} | "
                      f"{mark(r['engine_ok'], r['engine_status'])} | {', '.join(r['asked']) or '—'} |")
-    lines += ["", "Raw SQL for every run: `data/processed/ask_eval.json` (git-ignored)."]
+    lines += ["", "Raw SQL for every run: `data/ask_eval.json` (git-ignored)."]
     REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 

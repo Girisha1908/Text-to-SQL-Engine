@@ -1,6 +1,6 @@
 """Turn time phrases ("last month", "in August 2026", "last 7 days") into [start, end) dates.
 
-Governed defaults (see docs/ask/PRD.md §7):
+Governed defaults (see docs/PRD.md §7):
   last month   -> previous calendar month
   this month   -> first of month .. today (inclusive)
   last N days  -> the N full days before today

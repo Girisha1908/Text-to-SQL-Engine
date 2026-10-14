@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ask Your Data: panels rise in, list items cascade (see docs/ask/DESIGN.md §6). */
+/* Ask Your Data: panels rise in, list items cascade (see docs/DESIGN.md §6). */
 @keyframes ask-rise {
   from {
     opacity: 0;
