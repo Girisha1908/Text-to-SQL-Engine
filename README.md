@@ -2,7 +2,7 @@
 
 **Text-to-SQL that asks what you mean before it answers.**
 
-Live demo: https://insightcart.girishanamala.tech
+Live demo: https://ask-your-data-sigma.vercel.app/
 
 Ask an e-commerce database a question in plain English and get the answer — but when the question can be
 read more than one way, the system stops and asks which meaning you want *before* it writes any SQL.
